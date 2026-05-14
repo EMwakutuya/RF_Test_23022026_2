@@ -190,7 +190,7 @@ def forecast_tree_models(horizon_months=120):
     if HAS_PROPHET:
         # Build future frame for Prophet with known future weather
         start = df['Date'].iloc[-1]
-        dates = pd.date_range(start, periods=horizon_months+1, freq='M')[1:]
+        dates = pd.date_range(start, periods=horizon_months+1, freq='ME')[1:]
         p_future = pd.DataFrame({'ds': dates, 'Temp_C': future_df['Temp_C'], 'Precip_mm': future_df['Precip_mm']})
         p_out = prophet_model.predict(p_future)
         prophet_fore = p_out['yhat'].values
@@ -217,7 +217,7 @@ if HAS_PROPHET and 'prophet' in weights and prophet_fore is not None: preds.appe
 ensemble_fore = np.sum(preds, axis=0) if preds else rf_fore
 
 # Dates for plotting
-future_dates = pd.date_range(df['Date'].iloc[-1], periods=horizon+1, freq='M')[1:]
+future_dates = pd.date_range(df['Date'].iloc[-1], periods=horizon+1, freq='ME')[1:]
 
 # ================= Layout =================
 col1, col2 = st.columns([2,1], gap='large')
